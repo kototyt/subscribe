@@ -12,7 +12,7 @@ import org.scribe.oauth.OAuthService;
 
 public class TwitterExample {
 
-    private static final String PROTECTED_RESOURCE_URL = "https://api.twitter.com/1/statuses/update.json";
+    private static final String PROTECTED_RESOURCE_URL = "https://api.twitter.com/1.1/account/verify_credentials.json";
 
     public static void main(String[] args) {
         OAuthService service = new ServiceBuilder()
@@ -42,12 +42,12 @@ public class TwitterExample {
         System.out.println("Trading the Request Token for an Access Token...");
         Token accessToken = service.getAccessToken(requestToken, verifier);
         System.out.println("Got the Access Token!");
-        System.out.println("(if your curious it looks like this: " + accessToken + " )");
+        System.out.println("(if you're curious it looks like this: " + accessToken + " )");
         System.out.println();
 
         // Now let's go and ask for a protected resource!
         System.out.println("Now we're going to access a protected resource...");
-        OAuthRequest request = new OAuthRequest(Verb.POST, PROTECTED_RESOURCE_URL);
+        OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
         request.addBodyParameter("status", "this is sparta! *");
         service.signRequest(accessToken, request);
         Response response = request.send();
@@ -56,7 +56,7 @@ public class TwitterExample {
         System.out.println(response.getBody());
 
         System.out.println();
-        System.out.println("Thats it man! Go and build something awesome with SubScribe! :)");
+        System.out.println("That's it man! Go and build something awesome with SubScribe! :)");
     }
 
 }
