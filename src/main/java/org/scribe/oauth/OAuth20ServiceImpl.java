@@ -34,16 +34,18 @@ public class OAuth20ServiceImpl implements OAuthService {
 
   protected OAuthRequest createAccessTokenRequest(final Verifier verifier) {
     final OAuthRequest request = new OAuthRequest(api.getAccessTokenVerb(), api.getAccessTokenEndpoint());
-    request.addParameter(OAuthConstants.CLIENT_ID, config.getApiKey());
-    request.addParameter(OAuthConstants.CLIENT_SECRET, config.getApiSecret());
     request.addParameter(OAuthConstants.CODE, verifier.getValue());
     request.addParameter(OAuthConstants.REDIRECT_URI, config.getCallback());
+    request.addParameter(OAuthConstants.CLIENT_ID, config.getApiKey());
+    request.addParameter(OAuthConstants.CLIENT_SECRET, config.getApiSecret());
+    if (config.hasGrantType()) {
+        request.addParameter(OAuthConstants.GRANT_TYPE, config.getGrantType());
+    }
+
     if (config.hasScope()) {
       request.addParameter(OAuthConstants.SCOPE, config.getScope());
     }
-    if (config.hasGrantType()) {
-      request.addParameter(OAuthConstants.GRANT_TYPE, config.getGrantType());
-    }
+
     if (config.getConnectTimeout() != null) {
       request.setConnectTimeout(config.getConnectTimeout(), TimeUnit.MILLISECONDS);
     }
